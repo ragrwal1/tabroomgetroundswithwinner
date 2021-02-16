@@ -3,7 +3,20 @@ from bs4 import BeautifulSoup
 import hashlib
 
 
+import pandas as pd 
+  
+# initialize list of lists 
+#data = [['bruh', 'bruh2', 'bruh3']]
+data = {'roundID': ['Somu', 'Kiku', 'Amol', 'Lini'],
+	'winner': [68, 74, 77, 78],
+	'loser': [84, 56, 73, 69]}
+# Create the pandas DataFrame 
+df = pd.DataFrame(data) 
+  
+# print dataframe. 
 def getrounds(tournamentID, roundID):
+    global df
+    listofrounds = []
     url = "https://www.tabroom.com/index/tourn/results/round_results.mhtml?tourn_id=" + tournamentID + "&round_id=" + roundID
     fulltextpage = requests.get(url).text
     soup = BeautifulSoup(fulltextpage, 'html.parser')
@@ -15,10 +28,17 @@ def getrounds(tournamentID, roundID):
         bruh = y[i].get_text()
         bruh2 = ' '.join(bruh.split())
         try:
-          print(parseresults(bruh2, roundID))
+          rounddict = parseresults(bruh2, roundID)
+          print(rounddict)
+#append row to the dataframe
+          df = df.append(rounddict, ignore_index=True)
+          #print(rounddict)
+          listofrounds.append(rounddict)
+          
         except:
+          
           pass
-
+    print(listofrounds)
 
 
 def findwinner(roundlist):
@@ -28,13 +48,6 @@ def findwinner(roundlist):
     return True
   else:
     return False
-
-
-
-
-
-
-
 def parseresults(resultstring, rID):
 
     newdict = {}
@@ -115,9 +128,11 @@ def parseresults(resultstring, rID):
 ids = ['600575', '606010', '606007', '600516']
 #for i in ids:
 
-getrounds(str(17853), '600574')
+getrounds(str(17739), '595338')
 print('-----------17739---------------------------------')
-    
+print(df)
+df.to_excel(r'bruh.xlsx', index = False)
+
 
 '''
 Get tournaments from tab api
