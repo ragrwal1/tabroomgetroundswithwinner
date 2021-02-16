@@ -14,7 +14,10 @@ def getrounds(tournamentID, roundID):
     for i in range(len(y)):
         bruh = y[i].get_text()
         bruh2 = ' '.join(bruh.split())
-        parseresults(bruh2, roundID)
+        try:
+          print(parseresults(bruh2, roundID))
+        except:
+          pass
 
 
 
@@ -49,8 +52,18 @@ def parseresults(resultstring, rID):
     if '&' in temp3:
       
       for j in temp3:
+        #print(temp3)
         quicksortlist = []
-        if len(j) == 2 and j.isupper() and not j.isnumeric():
+        i = 0
+        if j.isnumeric():
+          x = True
+        elif j.isupper():
+          x = True
+        else:
+          x = False
+        if len(j) == 2 and i < 3 and x:
+          #print(j)
+          i += 1
           listindex = temp3.index(j)
           quicksortlist.append(temp3[listindex + 1])
           quicksortlist.append(temp3[listindex + 3])
@@ -71,37 +84,41 @@ def parseresults(resultstring, rID):
           if len(roundentry) == 2:
             break
         #create a round hash id
-    roundname = rID + ''.join(roundentry)
-     
-    hash_object = hashlib.md5(bytes(roundname, encoding='utf-8'))
-    roundhash = hash_object.hexdigest()
-    #print(roundhash)
-    newdict['roundID'] = roundhash
-    #findwinner
-    winner = findwinner(temp3)
-    if winner:
-      newdict['winner'] = roundentry[0]
-      newdict['loser'] = roundentry[1]
+    if len(roundentry) == 2:
+      roundname = rID + ''.join(roundentry)
+      
+      hash_object = hashlib.md5(bytes(roundname, encoding='utf-8'))
+      roundhash = hash_object.hexdigest()
+      #print(roundhash)
+      newdict['roundID'] = roundhash
+      #findwinner
+      winner = findwinner(temp3)
+      if winner:
+        newdict['winner'] = roundentry[0]
+        newdict['loser'] = roundentry[1]
+      else:
+        newdict['winner'] = roundentry[1]
+        newdict['loser'] = roundentry[0]
+      return newdict
     else:
-      newdict['winner'] = roundentry[1]
-      newdict['loser'] = roundentry[0]
+      pass
       
 
 
     
     #print(roundentry)
     #print(rID)
-    print(newdict)
+    
   
 
 
 ids = ['600575', '606010', '606007', '600516']
 #for i in ids:
 
-getrounds(str(17853), '606007')
-print('--------------------------------------------')
+getrounds(str(17853), '600574')
+print('-----------17739---------------------------------')
     
-    
+
 '''
 Get tournaments from tab api
 Get events from tab api
