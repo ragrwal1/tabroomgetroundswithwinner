@@ -178,16 +178,33 @@ def parseresults(resultstring, rID):
 
 #for i in ids:
 
-getrounds(str(17739), '595338', 'VPF')
+#getrounds(str(17739), '595338', 'VPF')
 for i in datalist:
+  
   #print(i)
   print("\n")
-  bruh = i.keys()
-  bruh2 = []
-  for j in bruh:
+  datakeys = i.keys()
+  reallist = []
+  for j in datakeys:
     #print(x[i])
-    bruh2.append(j)
-  print(bruh2)
+    reallist.append(j)
+  #print(reallist)
+  #try:
+  listnum = 0
+  for roundt in reallist:
+    if listnum > 0:
+      try:
+        for roundid in i[roundt]:
+          print(str(reallist[listnum]) + ' ' + i['TournamentID'] + ' ' + roundid)
+          getrounds(i['TournamentID'], roundid, str(reallist[listnum]))
+          print("\n")
+      except:
+        pass
+    listnum += 1
+  #except:
+  #pass
+  
+
 
 print('-----------17739---------------------------------')
 print(npf)
